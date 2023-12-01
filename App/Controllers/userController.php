@@ -48,7 +48,15 @@ class userController extends Controller{
     public function login(){
         $params['title'] = "Login";
         $this->render("user/login", $params, "site");
+        //include_once(__DIR__ . "../../Views/user/login.view.php");
+        $userModel = new User();
+        $username = $_POST['username']; 
+        $pass = $_POST['pass'];
+        $userModel->checkUser($username, $pass);
     }
+
+    
+    
 
 }
 

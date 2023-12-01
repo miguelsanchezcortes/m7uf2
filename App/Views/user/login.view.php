@@ -1,4 +1,4 @@
-<form action="/user/store" method="post">
+<form action="/user/login" method="post">
         <div class="mb-3">
           <label for="username" class="form-label">Username</label>
           <input type="text"
@@ -7,7 +7,7 @@
         </div>
         <div class="mb-3">
           <label for="pass" class="form-label">Password</label>
-          <input type="text"
+          <input type="password"
             class="form-control" name="pass" id="pass" aria-describedby="helpId" placeholder="">
           <small id="helpId" class="form-text text-muted">Help text</small>
         </div>
