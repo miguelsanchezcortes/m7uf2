@@ -1,22 +1,33 @@
 <?php
 
 
-class userController extends Controller{
+class userController extends Controller
+{
 
-    public function home(){
+    public function home()
+    {
         //hola
         echo "Estic a Home!!!!";
         // $params['title'] = "Home";
         // $this-> render("user/home", $params, "site");
     }
 
-    public function store(){
+    public function store()
+    {
+        $name = $_POST['name'];
         $username = $_POST['username'];
         $pass = $_POST['pass'];
+        if($username == 'admin'){
+            $admin = true;
+        } else {
+            $admin = false;
+        }
 
         $user = array(
+            "name" => $name,
             "username" => $username,
-            "password" => $pass
+            "password" => $pass,
+            "admin" => $admin
         );
 
 
@@ -24,11 +35,12 @@ class userController extends Controller{
         $userModel = new User();
 
         $userModel->create($user);
-
-        echo "estic a create";
+        $params['flash_ok'] = "Usuari creat correctament";
+        $this->render("user/login", $params, "site");
     }
 
-    public function list(){
+    public function list()
+    {
 
         $userModel = new User();
         $llista = $userModel->getAll();
@@ -39,25 +51,31 @@ class userController extends Controller{
         }
     }
 
-    public function create(){
+    public function create()
+    {
         $params['title'] = "Signin";
         $this->render("user/create", $params, "site");
         //include_once(__DIR__ . "../../Views/user/create.view.php");
     }
 
-    public function login(){
-        $params['title'] = "Login";
-        $this->render("user/login", $params, "site");
-        //include_once(__DIR__ . "../../Views/user/login.view.php");
+    public function login()
+    {
+        $username = $_POST['username'] ?? null;
+        $pass = $_POST['pass'] ?? null;
+
         $userModel = new User();
-        $username = $_POST['username']; 
-        $pass = $_POST['pass'];
-        $userModel->checkUser($username, $pass);
+        $result = $userModel->login($username, $pass);
+
+        if($result['admin'] == true){
+            $params['llista'] = $userModel->getAll();
+        }
+
+        if (is_null($result)) {
+            $params['flash_ko'] = "Usuari o contrasenya incorrectes";
+            $this->render("user/login", $params, "site");
+        } else {
+            $params['usuari'] = $result;
+            $this->render("user/home", $params, "site");
+        }
     }
-
-    
-    
-
 }
-
-?>

@@ -11,18 +11,16 @@ class User extends Orm{
             $_SESSION['id_user']=1;
         }
     }
-    public function checkUser($username, $pass){
-        $userModel = new User();
-        $llista = $userModel->getAll();
-        foreach ($llista as $key => $user) {
+    public function login($username, $pass){
+        foreach ($_SESSION[$this->model] as $user) {
             if($username == $user['username']){
                 if($pass == $user['pass']){
-                     echo "Login correcte";
+                     return $user;
                      break;
                 }
             }
         }
-        echo "Login incorrecte";
+        return null;
     }
 
     
