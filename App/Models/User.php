@@ -11,19 +11,19 @@ class User extends Orm{
             $_SESSION['id_user']=1;
         }
     }
-    public function login($username, $pass){
+
+
+    public function login($u,$p){
         foreach ($_SESSION[$this->model] as $user) {
-            if($username == $user['username']){
-                if($pass == $user['pass']){
-                     return $user;
-                     break;
-                }
+            if($user['username'] == $u){
+                if($user['pass'] == $p){
+                    return $user;
             }
         }
         return null;
     }
 
-    
+}
 }
 
 

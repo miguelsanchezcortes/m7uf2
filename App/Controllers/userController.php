@@ -1,25 +1,21 @@
 <?php
 
 
-class userController extends Controller
-{
+class userController extends Controller{
 
-    public function home()
-    {
+    public function home(){
         //hola
         echo "Estic a Home!!!!";
-        // $params['title'] = "Home";
-        // $this-> render("user/home", $params, "site");
     }
 
-    public function store()
-    {
+    public function store(){
         $name = $_POST['name'];
         $username = $_POST['username'];
         $pass = $_POST['pass'];
-        if($username == 'admin'){
+
+        if($username=='admin'){
             $admin = true;
-        } else {
+        }else{
             $admin = false;
         }
 
@@ -30,17 +26,17 @@ class userController extends Controller
             "admin" => $admin
         );
 
-
-
         $userModel = new User();
 
         $userModel->create($user);
         $params['flash_ok'] = "Usuari creat correctament";
+
         $this->render("user/login", $params, "site");
+
+        
     }
 
-    public function list()
-    {
+    public function list(){
 
         $userModel = new User();
         $llista = $userModel->getAll();
@@ -51,31 +47,36 @@ class userController extends Controller
         }
     }
 
-    public function create()
-    {
-        $params['title'] = "Signin";
+    public function create(){
+
+        $params = null;
         $this->render("user/create", $params, "site");
         //include_once(__DIR__ . "../../Views/user/create.view.php");
     }
 
-    public function login()
-    {
+
+    public function login(){
         $username = $_POST['username'] ?? null;
         $pass = $_POST['pass'] ?? null;
 
         $userModel = new User();
-        $result = $userModel->login($username, $pass);
+        $result = $userModel->login($username,$pass);
 
-        if($result['admin'] == true){
+        if($result['username']=='admin'){
             $params['llista'] = $userModel->getAll();
         }
 
-        if (is_null($result)) {
-            $params['flash_ko'] = "Usuari o contrasenya incorrectes";
+        if(is_null($result)){
+            $params['flash_ko'] = "Credencials incorrectes";
             $this->render("user/login", $params, "site");
-        } else {
+        }else{
             $params['usuari'] = $result;
-            $this->render("user/home", $params, "site");
+            $this->render("home/index", $params, "site");
         }
+
+
     }
+
 }
+
+?>
